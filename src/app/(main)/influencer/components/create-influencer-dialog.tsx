@@ -67,7 +67,12 @@ export const CreateInfluencerDialog = () => {
 
   return (
     <Dialog onOpenChange={(open) => open && form.reset()}>
-      <DialogTrigger className={buttonVariants({ size: "sm" })}>
+      <DialogTrigger
+        className={buttonVariants({
+          size: "sm",
+          className: "mb-4",
+        })}
+      >
         <PlusCircle /> Add new
       </DialogTrigger>
       <DialogContent>
