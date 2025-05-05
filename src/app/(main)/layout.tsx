@@ -1,6 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Home } from "lucide-react";
+import { ReactNode } from "react";
+import { LiaUserCheckSolid } from "react-icons/lia";
+import { Toaster } from "sonner";
+import { MdOutlineCampaign } from "react-icons/md";
 import {
   Sidebar,
   SidebarContent,
@@ -15,12 +22,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Home } from "lucide-react";
-import Link from "next/link";
-import { ReactNode } from "react";
-import { LiaUserCheckSolid } from "react-icons/lia";
-import { Toaster } from "sonner";
 
 const queryClient = new QueryClient();
 
@@ -73,5 +74,10 @@ const menus = [
     title: "Influencer",
     url: "/influencer",
     icon: LiaUserCheckSolid,
+  },
+  {
+    title: "Campaign",
+    url: "/campaign",
+    icon: MdOutlineCampaign,
   },
 ];

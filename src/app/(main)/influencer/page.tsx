@@ -63,14 +63,5 @@ type Influencer = {
   createdAt: string;
   updatedAt: string;
 };
-type Account = {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  username: string;
-  followers: number;
-  brandingLvl: number;
-  platform: string;
-  influencerId: string;
-};
+
 type Detail = Influencer & { account: Account[] };

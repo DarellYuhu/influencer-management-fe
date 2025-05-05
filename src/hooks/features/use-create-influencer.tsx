@@ -1,4 +1,5 @@
 import { revalidateData } from "@/actions/revalidate-data";
+import { PLATFORM_LIST } from "@/constants";
 import { BaseClient } from "@/lib/base-client";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -27,7 +28,7 @@ export const createInfluencerSchema = z.object({
       brandingLvl: z.number().min(1).max(5),
       followers: z.coerce.number().positive(),
       username: z.string().trim().min(1, { message: "Username is required" }),
-      platform: z.enum(["TIKTOK", "FACEBOOK", "INSTAGRAM", "X"]),
+      platform: z.enum(PLATFORM_LIST),
     })
   ),
 });

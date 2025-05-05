@@ -39,6 +39,8 @@ import {
   CreateInfluencerSchema,
   useCreateInfluencer,
 } from "@/hooks/features/use-create-influencer";
+import { PLATFORM_LIST } from "@/constants";
+import { capitalize } from "lodash";
 
 export const CreateInfluencerDialog = () => {
   const { mutate } = useCreateInfluencer();
@@ -151,9 +153,9 @@ export const CreateInfluencerDialog = () => {
                               <SelectValue placeholder="Select Platform" />
                             </SelectTrigger>
                             <SelectContent>
-                              {platformOption.map((option, idx) => (
-                                <SelectItem value={option.value} key={idx}>
-                                  {option.label}
+                              {PLATFORM_LIST.map((option, idx) => (
+                                <SelectItem value={option} key={idx}>
+                                  {capitalize(option)}
                                 </SelectItem>
                               ))}
                             </SelectContent>
@@ -227,22 +229,3 @@ export const CreateInfluencerDialog = () => {
     </Dialog>
   );
 };
-
-const platformOption = [
-  {
-    value: "TIKTOK",
-    label: "Tiktok",
-  },
-  {
-    value: "FACEBOOK",
-    label: "Facebook",
-  },
-  {
-    value: "INSTAGRAM",
-    label: "Instagram",
-  },
-  {
-    value: "X",
-    label: "X",
-  },
-];
