@@ -23,7 +23,9 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+});
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   return (

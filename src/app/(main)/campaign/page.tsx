@@ -6,6 +6,7 @@ import { PLATFORM_LIST } from "@/constants";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AddCampAccDialog } from "./components/add-camp-acc-dialog";
+import { getAccounts } from "@/actions/features/get-accounts";
 
 export default async function CampaignPage({
   searchParams,
@@ -19,11 +20,10 @@ export default async function CampaignPage({
 
   if (id) {
     detail = (await BaseClient.get<Detail>("/campaigns/" + id)).data;
-    options = (
-      await BaseClient.get<Account[]>("/accounts", {
-        params: { platform: detail.platform },
-      })
-    ).data.map((item) => ({ label: item.username, value: item.id }));
+    options = (await getAccounts(detail.platform)).data.map((item) => ({
+      label: item.username,
+      value: item.id,
+    }));
   }
 
   return (

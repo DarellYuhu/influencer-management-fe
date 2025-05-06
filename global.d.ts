@@ -8,3 +8,11 @@ type Account = {
   platform: string;
   influencerId: string;
 };
+
+type Niche = {
+  id: number;
+  name: string;
+  description: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
