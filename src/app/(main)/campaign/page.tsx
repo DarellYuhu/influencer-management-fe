@@ -2,11 +2,16 @@ import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CreateCampaignDialog } from "./components/create-campaign-dialog";
 import { BaseClient } from "@/lib/base-client";
-import { PLATFORM_LIST } from "@/constants";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AddCampAccDialog } from "./components/add-camp-acc-dialog";
 import { getAccounts } from "@/actions/features/get-accounts";
+import { Rating } from "@/components/custom/rating";
+import { abbreviateNumber } from "@/lib/abbreviate-number";
+
+type Detail = Campaign & {
+  campaignAccount: Account[];
+};
 
 export default async function CampaignPage({
   searchParams,
@@ -55,10 +60,25 @@ export default async function CampaignPage({
             <CardContent>
               <p>Operation Date: {detail.operationDate}</p>
               <p>Platform: {detail.platform}</p>
-              <div className="border border-accent-foreground">
+              <div className="border border-accent-foreground p-2 rounded-md">
                 {options && (
                   <AddCampAccDialog options={options} campaignId={detail.id} />
                 )}
+                <div className="grid grid-cols-4 pt-2 gap-4">
+                  {detail.campaignAccount.map((item, idx) => (
+                    <Link
+                      href={`/campaign/${id}/user/${item.id}`}
+                      key={idx}
+                      className="bg-card shadow-sm border p-2 rounded-md"
+                    >
+                      <p className="font-semibold">{item.username}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {abbreviateNumber(item.followers)}
+                      </p>
+                      <Rating filled={item.brandingLvl} size="sm" />
+                    </Link>
+                  ))}
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -67,14 +87,3 @@ export default async function CampaignPage({
     </div>
   );
 }
-
-type Campaign = {
-  id: string;
-  name: string;
-  platform: (typeof PLATFORM_LIST)[number];
-  operationDate: string;
-};
-
-type Detail = Campaign & {
-  campaignAccount: [];
-};

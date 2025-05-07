@@ -16,3 +16,17 @@ type Niche = {
   createdAt: string;
   updatedAt: string;
 };
+
+type Campaign = {
+  id: string;
+  name: string;
+  platform: (typeof PLATFORM_LIST)[number];
+  operationDate: string;
+};
+
+type Influencer = {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+};

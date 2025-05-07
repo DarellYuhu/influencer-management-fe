@@ -51,7 +51,7 @@ export const AddCampAccDialog = ({
       return data;
     },
     onSuccess: () => {
-      toast.success("Campaign created!");
+      toast.success("Account added!");
       revalidateData("/campaign");
       closeBtn.current?.click();
     },

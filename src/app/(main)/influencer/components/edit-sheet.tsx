@@ -23,6 +23,8 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { useCampaigns } from "@/hooks/features/use-campaigns";
+import { useAddCampaigns } from "@/hooks/features/use-add-campaigns";
 
 export const EditSheet = () => {
   const router = useRouter();
@@ -42,24 +44,25 @@ export const EditSheet = () => {
           </SheetDescription>
         </SheetHeader>
 
-        <div className="p-4">
+        <div className="p-4 space-y-2">
           <EditNiche />
+          <AddCampaign />
         </div>
       </SheetContent>
     </Sheet>
   );
 };
 
-const formSchema = z.object({
+const addNicheSchema = z.object({
   input: z
     .array(z.object({ value: z.string(), label: z.string() }))
     .min(1, "Required"),
 });
-type FormSchema = z.infer<typeof formSchema>;
+type AddNicheSchema = z.infer<typeof addNicheSchema>;
 const EditNiche = () => {
   const { data: niches } = useNiches();
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<AddNicheSchema>({
+    resolver: zodResolver(addNicheSchema),
     defaultValues: { input: [] },
   });
   const { mutate } = useAddNiches();
@@ -84,6 +87,58 @@ const EditNiche = () => {
                       niches?.map((item) => ({
                         label: item.name,
                         value: item.id.toString(),
+                      })) ?? []
+                    }
+                    onChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button size={"sm"} className="flex place-self-end">
+            Add
+          </Button>
+        </form>
+      </Form>
+    </div>
+  );
+};
+
+const addCampaignSchema = z.object({
+  input: z
+    .array(z.object({ value: z.string(), label: z.string() }))
+    .min(1, "Required"),
+});
+type AddCampaignSchema = z.infer<typeof addCampaignSchema>;
+const AddCampaign = () => {
+  const { data: campaigns } = useCampaigns();
+  const { mutate } = useAddCampaigns();
+  const form = useForm<AddCampaignSchema>({
+    resolver: zodResolver(addCampaignSchema),
+    defaultValues: { input: [] },
+  });
+  return (
+    <div className="border border-accent-foreground p-3 rounded-md">
+      <Form {...form}>
+        <form
+          className="space-y-2"
+          onSubmit={form.handleSubmit((val) =>
+            mutate(val.input.map((item) => item.value))
+          )}
+        >
+          <FormField
+            control={form.control}
+            name="input"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Add Campaign</FormLabel>
+                <FormControl>
+                  <MultipleSelector
+                    options={
+                      campaigns?.map((item) => ({
+                        label: item.name,
+                        value: item.id,
                       })) ?? []
                     }
                     onChange={field.onChange}
