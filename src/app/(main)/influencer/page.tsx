@@ -3,6 +3,7 @@ import { CreateNicheDialog } from "./components/create-niche-dialog";
 import { AccountList } from "./components/account-list";
 import { getAccounts } from "@/actions/features/get-accounts";
 import { EditSheet } from "./components/edit-sheet";
+import { Suspense } from "react";
 
 export default async function InfluencerPage() {
   const accounts = (await getAccounts()).data;
@@ -16,7 +17,9 @@ export default async function InfluencerPage() {
         </div>
         <AccountList data={accounts} />
       </div>
-      <EditSheet />
+      <Suspense fallback={<div>Loading...</div>}>
+        <EditSheet />
+      </Suspense>
     </>
   );
 }

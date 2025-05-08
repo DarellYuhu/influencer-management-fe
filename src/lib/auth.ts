@@ -17,6 +17,7 @@ declare module "next-auth" {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   callbacks: {
     async authorized({ auth }) {
       return !!auth;
