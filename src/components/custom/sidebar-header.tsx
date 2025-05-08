@@ -7,6 +7,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 export const SidebarHeader = () => {
   return (
@@ -25,6 +27,10 @@ export const SidebarHeader = () => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem disabled={true}>Profile</DropdownMenuItem>
+        <DropdownMenuItem variant="destructive" onClick={() => signOut()}>
+          <LogOut />
+          Logout
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
