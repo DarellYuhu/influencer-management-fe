@@ -1,13 +1,5 @@
 "use client";
 
-import { Button, buttonVariants } from "@/components/ui/button";
-import { MinusCircle, Plus, PlusCircle } from "lucide-react";
-import { useFieldArray, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { useRef } from "react";
 import {
   Dialog,
   DialogClose,
@@ -33,12 +25,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Slider from "@/components/custom/slider";
 import {
   createInfluencerSchema,
   CreateInfluencerSchema,
   useCreateInfluencer,
 } from "@/hooks/features/use-create-influencer";
+import { Slider } from "@/components/custom/slider";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { MinusCircle, Plus, PlusCircle } from "lucide-react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { useRef } from "react";
 import { PLATFORM_LIST } from "@/constants";
 import { capitalize } from "lodash";
 
@@ -154,7 +154,11 @@ export const CreateInfluencerDialog = () => {
                             </SelectTrigger>
                             <SelectContent>
                               {PLATFORM_LIST.map((option, idx) => (
-                                <SelectItem value={option} key={idx}>
+                                <SelectItem
+                                  value={option}
+                                  key={idx}
+                                  disabled={option !== "TIKTOK"}
+                                >
                                   {capitalize(option)}
                                 </SelectItem>
                               ))}

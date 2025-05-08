@@ -30,3 +30,25 @@ type Influencer = {
   createdAt: string;
   updatedAt: string;
 };
+
+type Content = {
+  id: string;
+  link: string;
+  duration: number;
+  createTime: string;
+  description: string;
+  campAcctId: number;
+  coverId: number;
+  cover: string;
+  statistic: Statistic;
+};
+
+type Statistic = {
+  contentId: string;
+  comment: number;
+  like: number;
+  download: number;
+  play: number;
+  share: number;
+  forward: number;
+};

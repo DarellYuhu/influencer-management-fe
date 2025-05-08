@@ -1,16 +1,30 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  GoComment,
+  GoDownload,
+  GoHeart,
+  GoPlay,
+  GoShare,
+} from "react-icons/go";
+import { AddCampAccDialog } from "./components/add-camp-acc-dialog";
+import { getAccounts } from "@/actions/features/get-accounts";
+import { Rating } from "@/components/custom/rating";
+import { abbreviateNumber } from "@/lib/abbreviate-number";
 import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CreateCampaignDialog } from "./components/create-campaign-dialog";
 import { BaseClient } from "@/lib/base-client";
 import { buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AddCampAccDialog } from "./components/add-camp-acc-dialog";
-import { getAccounts } from "@/actions/features/get-accounts";
-import { Rating } from "@/components/custom/rating";
-import { abbreviateNumber } from "@/lib/abbreviate-number";
 
 type Detail = Campaign & {
   campaignAccount: Account[];
+  statistic: Statistic;
 };
 
 export default async function CampaignPage({
@@ -56,10 +70,34 @@ export default async function CampaignPage({
           <Card className="w-full">
             <CardHeader>
               <CardTitle>{detail.name}</CardTitle>
+              <CardDescription>
+                <p>Operation Date: {detail.operationDate}</p>
+                <p>Platform: {detail.platform}</p>
+              </CardDescription>
             </CardHeader>
-            <CardContent>
-              <p>Operation Date: {detail.operationDate}</p>
-              <p>Platform: {detail.platform}</p>
+            <CardContent className="space-y-4">
+              <div className="border border-accent-foreground p-2 rounded-md flex flex-row gap-2 flex-wrap place-self-end">
+                <div className="flex items-center gap-1">
+                  <GoPlay />
+                  {abbreviateNumber(detail.statistic.play)}
+                </div>
+                <div className="flex items-center gap-1">
+                  <GoHeart />
+                  {abbreviateNumber(detail.statistic.like)}
+                </div>
+                <div className="flex items-center gap-1">
+                  <GoComment />
+                  {abbreviateNumber(detail.statistic.comment)}
+                </div>
+                <div className="flex items-center gap-1">
+                  <GoShare />
+                  {abbreviateNumber(detail.statistic.share)}
+                </div>
+                <div className="flex items-center gap-1">
+                  <GoDownload />
+                  {abbreviateNumber(detail.statistic.download)}
+                </div>
+              </div>
               <div className="border border-accent-foreground p-2 rounded-md">
                 {options && (
                   <AddCampAccDialog options={options} campaignId={detail.id} />

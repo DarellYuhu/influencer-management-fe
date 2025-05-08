@@ -24,11 +24,12 @@ import { BaseClient } from "@/lib/base-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { PlusCircle, PlusIcon, Trash2 } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useRef } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { revalidateData } from "@/actions/revalidate-data";
 
 const formSchema = z.object({
   content: z.array(z.object({ link: z.string().url() })).min(1, "Required"),
@@ -36,6 +37,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export const AddContentDialog = () => {
+  const pathname = usePathname();
   const closeBtn = useRef<HTMLButtonElement>(null);
   const params = useParams();
   const form = useForm<FormSchema>({
@@ -47,7 +49,7 @@ export const AddContentDialog = () => {
     control: form.control,
   });
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async (payload: FormSchema) => {
       const { data } = await BaseClient.post("/contents", {
         urls: payload.content.map((item) => item.link),
@@ -59,6 +61,7 @@ export const AddContentDialog = () => {
     onSuccess() {
       toast.success("Content added!");
       closeBtn.current?.click();
+      revalidateData(pathname);
     },
     onError() {
       toast.error("Failed to add content");
@@ -124,7 +127,7 @@ export const AddContentDialog = () => {
             size={"sm"}
             form="add-content"
             type="submit"
-            disabled={fields.length === 0}
+            disabled={fields.length === 0 || isPending}
           >
             Submit
           </Button>

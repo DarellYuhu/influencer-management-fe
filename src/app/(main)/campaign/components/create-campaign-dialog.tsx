@@ -1,14 +1,5 @@
 "use client";
 
-import { Button, buttonVariants } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { useRef } from "react";
-import { PLATFORM_LIST } from "@/constants";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { DatePicker } from "@/components/custom/date-picker";
-import { capitalize } from "lodash";
 import {
   Form,
   FormControl,
@@ -39,6 +30,15 @@ import {
   CreateCampaignSchema,
   useCreateCampaign,
 } from "@/hooks/features/use-create-campaign";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { useRef } from "react";
+import { PLATFORM_LIST } from "@/constants";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/custom/date-picker";
+import { capitalize } from "lodash";
 
 export const CreateCampaignDialog = () => {
   const closeBtn = useRef<HTMLButtonElement>(null);
@@ -128,7 +128,11 @@ export const CreateCampaignDialog = () => {
                       </SelectTrigger>
                       <SelectContent>
                         {PLATFORM_LIST.map((option, idx) => (
-                          <SelectItem value={option} key={idx}>
+                          <SelectItem
+                            value={option}
+                            key={idx}
+                            disabled={option !== "TIKTOK"}
+                          >
                             {capitalize(option)}
                           </SelectItem>
                         ))}

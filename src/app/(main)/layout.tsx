@@ -15,13 +15,14 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarHeader,
+  SidebarHeader as ShadcnSidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { SidebarHeader } from "@/components/custom/sidebar-header";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
@@ -32,7 +33,9 @@ export default function MainLayout({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <SidebarProvider>
         <Sidebar>
-          <SidebarHeader></SidebarHeader>
+          <ShadcnSidebarHeader>
+            <SidebarHeader />
+          </ShadcnSidebarHeader>
           <SidebarContent>
             <SidebarGroup>
               <SidebarGroupLabel>Menu</SidebarGroupLabel>

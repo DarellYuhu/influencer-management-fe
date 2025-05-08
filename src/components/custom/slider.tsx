@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Slider as ShadcnSlider } from "@/components/ui/slider";
 
-export default function Slider({
+export function Slider({
   max,
   value,
   onValueChange,
