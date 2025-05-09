@@ -24,10 +24,57 @@ export default async function CampaignUserPage({ params }: PageProps) {
       params: { accountId, campaignId },
     })
   ).data;
+  const statistics = (
+    await BaseClient.get<Statistic & Perf>(
+      `/campaigns/${campaignId}/accounts/${accountId}/statistics`
+    )
+  ).data;
 
   return (
     <div className="space-y-4">
       <AddContentDialog />
+      <div className="border border-accent-foreground p-2 rounded-md flex flex-row gap-2 flex-wrap place-self-start">
+        <p className="font-bold">Avg: </p>
+        <div className="flex items-center gap-1">
+          <GoPlay />
+          {abbreviateNumber(statistics.play)}
+        </div>
+        <div className="flex items-center gap-1">
+          <GoHeart />
+          {abbreviateNumber(statistics.like)}
+        </div>
+        <div className="flex items-center gap-1">
+          <GoComment />
+          {abbreviateNumber(statistics.comment)}
+        </div>
+        <div className="flex items-center gap-1">
+          <GoShare />
+          {abbreviateNumber(statistics.share)}
+        </div>
+        <div className="flex items-center gap-1">
+          <GoDownload />
+          {abbreviateNumber(statistics.download)}
+        </div>
+      </div>
+      <table>
+        <tbody>
+          <tr className="text-sm">
+            <td className="font-semibold">Play to Followers</td>
+            <td className="px-2">:</td>
+            <td>{statistics.playToFollowers?.toFixed(3)}</td>
+          </tr>
+          <tr className="text-sm">
+            <td className="font-semibold">Production Complexity</td>
+            <td className="px-2">:</td>
+            <td>{statistics.prodComplexity}</td>
+          </tr>
+          <tr className="text-sm">
+            <td className="font-semibold">Message Embeding</td>
+            <td className="px-2">:</td>
+            <td>{statistics.messageEmbeding}</td>
+          </tr>
+        </tbody>
+      </table>
       <div className="flex flex-wrap gap-4">
         {contents.map((item, idx) => (
           <div

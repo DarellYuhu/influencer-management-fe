@@ -31,7 +31,14 @@ type Influencer = {
   updatedAt: string;
 };
 
-type Content = {
+// performance
+type Perf = {
+  prodComplexity: number | null;
+  messageEmbeding: number | null;
+  playToFollowers: number | null;
+};
+
+type Content = Perf & {
   id: string;
   link: string;
   duration: number;
@@ -41,9 +48,6 @@ type Content = {
   coverId: number;
   cover: string;
   statistic: Statistic;
-  prodComplexity: number | null;
-  messageEmbeding: number | null;
-  playToFollowers: number | null;
 };
 
 type Statistic = {
