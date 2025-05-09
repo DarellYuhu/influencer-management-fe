@@ -41,6 +41,9 @@ type Content = {
   coverId: number;
   cover: string;
   statistic: Statistic;
+  prodComplexity: number | null;
+  messageEmbeding: number | null;
+  playToFollowers: number | null;
 };
 
 type Statistic = {
