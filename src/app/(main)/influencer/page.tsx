@@ -4,9 +4,16 @@ import { AccountList } from "./components/account-list";
 import { getAccounts } from "@/actions/features/get-accounts";
 import { EditSheet } from "./components/edit-sheet";
 import { Suspense } from "react";
+import { getNiches } from "@/actions/features/get-niches";
 
-export default async function InfluencerPage() {
-  const accounts = (await getAccounts()).data;
+export default async function InfluencerPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string }>;
+}) {
+  const params = await searchParams;
+  const accounts = (await getAccounts(params)).data;
+  const niches = (await getNiches()).data;
 
   return (
     <>
@@ -15,7 +22,7 @@ export default async function InfluencerPage() {
           <CreateInfluencerDialog />
           <CreateNicheDialog />
         </div>
-        <AccountList data={accounts} />
+        <AccountList data={accounts} niches={niches} />
       </div>
       <Suspense fallback={<div>Loading...</div>}>
         <EditSheet />

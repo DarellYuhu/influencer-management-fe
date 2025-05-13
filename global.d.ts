@@ -7,6 +7,9 @@ type Account = {
   brandingLvl: number;
   platform: string;
   influencerId: string;
+  avatar: string | null;
+  niches: string[];
+  performance: Perf;
 };
 
 type Niche = {

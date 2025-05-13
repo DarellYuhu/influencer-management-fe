@@ -14,6 +14,15 @@ const eslintConfig = [
   {
     rules: {
       "@typescript-eslint/ban-ts-comment": ["warn"],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          vars: "all",
+          args: "after-used",
+          argsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+        },
+      ],
     },
   },
 ];

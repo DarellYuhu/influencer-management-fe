@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/sheet";
 import { useCampaigns } from "@/hooks/features/use-campaigns";
 import { useAddCampaigns } from "@/hooks/features/use-add-campaigns";
+import { EditAccountForm } from "./edit-account-form";
 
 export const EditSheet = () => {
   const router = useRouter();
@@ -47,6 +48,7 @@ export const EditSheet = () => {
         <div className="p-4 space-y-2">
           <EditNiche />
           <AddCampaign />
+          <EditAccountForm />
         </div>
       </SheetContent>
     </Sheet>

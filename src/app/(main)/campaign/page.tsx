@@ -39,10 +39,12 @@ export default async function CampaignPage({
 
   if (id) {
     detail = (await BaseClient.get<Detail>("/campaigns/" + id)).data;
-    options = (await getAccounts(detail.platform)).data.map((item) => ({
-      label: item.username,
-      value: item.id,
-    }));
+    options = (await getAccounts({ platform: detail.platform })).data.map(
+      (item) => ({
+        label: item.username,
+        value: item.id,
+      })
+    );
   }
 
   return (
