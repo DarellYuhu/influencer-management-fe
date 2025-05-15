@@ -1,3 +1,10 @@
+type Influencer = {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 type Account = {
   id: string;
   createdAt: string;

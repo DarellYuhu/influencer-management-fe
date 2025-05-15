@@ -34,7 +34,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useRef } from "react";
-import { PLATFORM_LIST } from "@/constants";
+import { ENABLED_PLATFORM_LIST, PLATFORM_LIST } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { DatePicker } from "@/components/custom/date-picker";
@@ -68,13 +68,13 @@ export const CreateCampaignDialog = () => {
           className: "mb-4",
         })}
       >
-        <PlusCircle /> Add new
+        <PlusCircle /> Create new
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add new campaign?</DialogTitle>
+          <DialogTitle>Create new campaign?</DialogTitle>
           <DialogDescription>
-            Please fill the form below to add new campaign
+            Please fill the form below to create new campaign
           </DialogDescription>
         </DialogHeader>
 
@@ -131,7 +131,7 @@ export const CreateCampaignDialog = () => {
                           <SelectItem
                             value={option}
                             key={idx}
-                            disabled={option !== "TIKTOK"}
+                            disabled={!ENABLED_PLATFORM_LIST.includes(option)}
                           >
                             {capitalize(option)}
                           </SelectItem>

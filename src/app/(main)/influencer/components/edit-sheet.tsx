@@ -26,6 +26,7 @@ import {
 import { useCampaigns } from "@/hooks/features/use-campaigns";
 import { useAddCampaigns } from "@/hooks/features/use-add-campaigns";
 import { EditAccountForm } from "./edit-account-form";
+import { useAccount } from "@/hooks/features/use-account";
 
 export const EditSheet = () => {
   const router = useRouter();
@@ -114,6 +115,7 @@ const addCampaignSchema = z.object({
 });
 type AddCampaignSchema = z.infer<typeof addCampaignSchema>;
 const AddCampaign = () => {
+  const { data: account } = useAccount();
   const { data: campaigns } = useCampaigns();
   const { mutate } = useAddCampaigns();
   const form = useForm<AddCampaignSchema>({
@@ -138,10 +140,12 @@ const AddCampaign = () => {
                 <FormControl>
                   <MultipleSelector
                     options={
-                      campaigns?.map((item) => ({
-                        label: item.name,
-                        value: item.id,
-                      })) ?? []
+                      campaigns
+                        ?.filter((item) => item.platform === account?.platform)
+                        .map((item) => ({
+                          label: item.name,
+                          value: item.id,
+                        })) ?? []
                     }
                     onChange={field.onChange}
                   />
