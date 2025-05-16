@@ -56,7 +56,6 @@ export const AddToExistingForm = ({
     name: "accounts",
   });
 
-  console.log(formId);
   return (
     <Form {...form}>
       <form

@@ -8,7 +8,7 @@ import {
 import { abbreviateNumber } from "@/lib/abbreviate-number";
 import { BaseClient } from "@/lib/base-client";
 import { AddContentDialog } from "./components/add-content-dialog";
-import { Calendar } from "lucide-react";
+import { Calendar, ImageOff } from "lucide-react";
 import { format } from "date-fns";
 import { DropdownMenu } from "./components/dropdown-menu";
 import { EditContentSheet } from "./components/edit-content-sheet";
@@ -81,15 +81,21 @@ export default async function CampaignUserPage({ params }: PageProps) {
             key={idx}
             className="w-96 p-2 border border-accent shadow-sm rounded-md relative"
           >
-            <img
-              src={item.cover}
-              className="h-52 w-full object-contain bg-gray-200 rounded-md"
-              alt={`image-${idx}`}
-            />
+            <div className="h-52 w-full bg-gray-200 rounded-md flex items-center justify-center">
+              {item.cover ? (
+                <img
+                  src={item.cover}
+                  alt={`image-${idx}`}
+                  className=" object-contain w-full h-full"
+                />
+              ) : (
+                <ImageOff className="size-20" />
+              )}
+            </div>
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <Calendar size={14} />
-                {format(item.createTime, "dd/MM/yyyy")}
+                {item.createTime ? format(item.createTime, "dd/MM/yyyy") : "-"}
               </div>
               <div className="grid grid-cols-5">
                 <div className="flex items-center gap-1">

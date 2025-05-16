@@ -51,12 +51,12 @@ type Perf = {
 type Content = Perf & {
   id: string;
   link: string;
-  duration: number;
-  createTime: string;
-  description: string;
+  duration: number | null;
+  createTime: string | null;
+  description: string | null;
   campAcctId: number;
   coverId: number;
-  cover: string;
+  cover: string | null;
   statistic: Statistic;
 };
 

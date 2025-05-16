@@ -32,7 +32,7 @@ import { z } from "zod";
 import { revalidateData } from "@/actions/revalidate-data";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Textarea } from "@/components/ui/textarea";
-import { FileUpload } from "@/components/custom/file-upload";
+import { DatePicker } from "@/components/custom/date-picker";
 
 const formSchema = z.object({
   content: z
@@ -40,15 +40,16 @@ const formSchema = z.object({
       z.object({
         link: z.string().url(),
         duration: z.number().optional(),
-        description: z.string(),
-        coverFile: z.instanceof(File).optional(),
+        description: z.string().optional(),
+        createTime: z.date().optional(),
+        imageLink: z.string().url().optional(),
         statistic: z.object({
-          comment: z.number().positive(),
-          like: z.number().positive(),
-          download: z.number().positive(),
-          play: z.number().positive(),
-          share: z.number().positive(),
-          forward: z.number().positive(),
+          comment: z.coerce.number().min(0),
+          like: z.coerce.number().min(0),
+          download: z.coerce.number().min(0),
+          play: z.coerce.number().min(0),
+          share: z.coerce.number().min(0),
+          forward: z.coerce.number().min(0),
         }),
       })
     )
@@ -67,8 +68,9 @@ export const AddContentDialog = () => {
       content: [
         {
           link: "",
-          coverFile: undefined,
-          description: "",
+          createTime: undefined,
+          imageLink: undefined,
+          description: undefined,
           duration: undefined,
           statistic: {
             comment: 0,
@@ -89,10 +91,15 @@ export const AddContentDialog = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (payload: FormSchema) => {
-      const { data } = await BaseClient.post("/contents", {
-        urls: payload.content.map((item) => item.link),
-        campaignId: params.campaignId,
-        accountId: params.accountId,
+      const dataPayload: DataPayload = {
+        campaignId: params.campaignId! as string,
+        accountId: params.accountId! as string,
+      };
+      if (inputMode === "auto")
+        dataPayload.urls = payload.content.map((item) => item.link);
+      if (inputMode === "manual") dataPayload.manualData = payload.content;
+      const { data } = await BaseClient.post("/contents", dataPayload, {
+        params: { schema: inputMode },
       });
       return data;
     },
@@ -145,9 +152,10 @@ export const AddContentDialog = () => {
                 onClick={() =>
                   append({
                     link: "",
-                    coverFile: undefined,
+                    imageLink: undefined,
                     duration: undefined,
-                    description: "",
+                    createTime: undefined,
+                    description: undefined,
                     statistic: {
                       comment: 0,
                       like: 0,
@@ -219,18 +227,28 @@ export const AddContentDialog = () => {
                     />
                     <FormField
                       control={form.control}
-                      name={`content.${idx}.coverFile`}
+                      name={`content.${idx}.createTime`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Image</FormLabel>
+                          <FormLabel>Creation Time</FormLabel>
                           <FormControl>
-                            <FileUpload
-                              accept="image/*"
-                              maxFiles={1}
-                              multiple={false}
-                              value={field.value ? [field.value] : undefined}
-                              onChange={(val) => field.onChange(val[0])}
+                            <DatePicker
+                              value={field.value}
+                              onValueChange={field.onChange}
                             />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`content.${idx}.imageLink`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Image Link</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="url" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -342,4 +360,24 @@ export const AddContentDialog = () => {
       </DialogContent>
     </Dialog>
   );
+};
+
+type DataPayload = {
+  accountId: string;
+  campaignId: string;
+  urls?: string[];
+  manualData?: {
+    link: string;
+    createTime?: Date;
+    description?: string;
+    imageLink?: string;
+    statistic: {
+      comment: number;
+      download: number;
+      forward: number;
+      like: number;
+      play: number;
+      share: number;
+    };
+  }[];
 };
