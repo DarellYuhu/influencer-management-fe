@@ -121,7 +121,17 @@ const columns: ColumnDef<Account>[] = [
   },
   {
     accessorKey: "followers",
-    header: "Followers",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Followers
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell({ row }) {
       return abbreviateNumber(row.original.followers);
     },

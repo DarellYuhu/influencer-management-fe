@@ -22,6 +22,7 @@ import { z } from "zod";
 
 const formSchema = z.object({
   username: z.string().min(1, { message: "Username is required" }),
+  followers: z.coerce.number().positive().optional(),
 });
 type FormSchema = z.infer<typeof formSchema>;
 
@@ -29,7 +30,7 @@ export const EditAccountForm = () => {
   const { data: account } = useAccount();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: { username: "" },
+    defaultValues: { username: "", followers: 0 },
   });
 
   const { mutate } = useMutation({
@@ -51,7 +52,7 @@ export const EditAccountForm = () => {
 
   useEffect(() => {
     if (account) {
-      form.reset({ username: account.username });
+      form.reset({ username: account.username, followers: account.followers });
     }
   }, [account]);
 
@@ -61,6 +62,7 @@ export const EditAccountForm = () => {
         <form
           onSubmit={form.handleSubmit((val) => mutate(val))}
           id="edit-account-form"
+          className="space-y-2"
         >
           <FormField
             control={form.control}
@@ -70,6 +72,19 @@ export const EditAccountForm = () => {
                 <FormLabel>Username</FormLabel>
                 <FormControl>
                   <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="followers"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Followers</FormLabel>
+                <FormControl>
+                  <Input {...field} type="number" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
